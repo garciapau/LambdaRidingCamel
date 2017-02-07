@@ -25,7 +25,7 @@ public class LambdaFunctionHandlerTest {
         TestContext ctx = new TestContext();
 
         // TODO: customize your context here if needed.
-        ctx.setFunctionName("Your Function Name");
+        ctx.setFunctionName("LambdaRidingCamel");
 
         return ctx;
     }

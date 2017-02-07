@@ -34,6 +34,27 @@
       <artifactId>camel-spring</artifactId>
     </dependency>
 
+    <!-- when using JAXB data format -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jaxb</artifactId>
+    </dependency>
+    <!-- when using CSV data format -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-csv</artifactId>
+    </dependency>
+    <!-- when using Bindy data format -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-bindy</artifactId>
+    </dependency>
+    <!-- when using JSON data format -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson</artifactId>
+    </dependency>
+        
     <!-- logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
