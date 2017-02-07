@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    <import resource="log-setup.xml"/>
+    <import resource="filter-setup.xml"/>
+    <import resource="marshaller-setup.xml"/>
+
+    <camelContext id="content.journal" xmlns="http://camel.apache.org/schema/spring">
+        <!-- here is a sample which processes the input files
+             (leaving them in place - see the 'noop' flag)
+             then performs content based routing on the message using XPath -->
+        <dataFormats>
+            <json id="json" library="Jackson"/>
+            <jaxb id="jaxb" contextPath="content.integration.model"/>
+        </dataFormats>
+
+        <route id="ManualStart">
+            <from uri="direct:start"/>
+            <log id="StartLogMessage" message="\n\t\t ------ Manually started 2 with body: ${body}"/>
+        </route>
+    </camelContext>
+</beans>
