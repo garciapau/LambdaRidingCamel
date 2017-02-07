@@ -11,6 +11,10 @@
     <import resource="marshaller-setup.xml"/>
     <import resource="log-setup.xml"/>
     <camelContext id="content.journal" xmlns="http://camel.apache.org/schema/spring">
+        <dataFormats>
+            <json id="json" library="Jackson"/>
+            <jaxb id="jaxb" contextPath="content.integration.model"/>
+        </dataFormats>
         <route id="ManualStart">
             <from uri="direct:start"/>
             <process id="LogMessage" ref="logProcessor"></process>
