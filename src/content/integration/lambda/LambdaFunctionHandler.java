@@ -1,6 +1,8 @@
 package content.integration.lambda;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.ConsumerTemplate;
+import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spring.SpringCamelContext;
@@ -17,35 +19,32 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
     @Override
     public String handleRequest(S3Event input, Context context) {
-        context.getLogger().log("Input: " + input);
-        context.getLogger().log("Remaining time: " + context.getRemainingTimeInMillis() + " ms");
-        
-        context.getLogger().log("\n\t\t\t ---------------- Hello, " + input.toJson() + "!");
-
-        String filename = "META-INF/spring/camel-context.xml";
-        ApplicationContext spring =
-                new ClassPathXmlApplicationContext(filename);
-        
+        context.getLogger().log("\n\t\t\t ---------------- Obtained file from S3 with content:, " + input.toJson() + "\n");
+        ApplicationContext spring =new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
+        String output = new String();
         try {
-        	context.getLogger().log("\nstarting Camel...");
         	SpringCamelContext camelContext = SpringCamelContext.springCamelContext(spring);
-        	context.getLogger().log("\nCamel loaded context");
-
         	camelContext.start();
-	        context.getLogger().log("\nSending direct message to Camel...");
             ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-	        producerTemplate.sendBody("direct:start", "Starting manual route... Camel Rocks");
-	        context.getLogger().log("\nSent message to Camel");
-
+            ConsumerTemplate consumerTemplate = camelContext.createConsumerTemplate();
+	        Exchange exchange = consumerTemplate.receiveNoWait("direct:end");
+	        context.getLogger().log("\nSending direct message to Camel...");
+	        producerTemplate.sendBody("direct:start", input.toJson());
+	        context.getLogger().log("\nMessage to Camel sent");
+	        exchange = consumerTemplate.receiveNoWait("direct:end");
+	        output = exchange.getIn().getBody().toString();
+	        context.getLogger().log("\nResult is: " + output);
+	        
+	        context.getLogger().log("\nStopping Camel...");
 	        camelContext.stop();
 	        context.getLogger().log("\nCamel stopped");
+	        context.getLogger().log("Remaining time at the end: " + context.getRemainingTimeInMillis() + " ms");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			context.getLogger().log("Error: " + e.getMessage());
-			e.printStackTrace();
 		}
 
-        return "Lambda OK";
+        return output;
     }
 
 }
