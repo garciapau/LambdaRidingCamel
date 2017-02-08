@@ -19,8 +19,13 @@
             <process id="LogMessage" ref="logProcessor"></process>
 			<setProperty id="getJournalId" propertyName="journalId"><xpath>/journal/@id</xpath></setProperty>
  			<unmarshal id="UnmarshallXML" ref="jaxb"/>
+            <log message="Unmarshalled is: ${body}"/>
             <marshal id="BuildJSONMessage" ref="json"/>
-            <transform><simple>${body.replaceAll(":null,", ":${property.journalId},")}</simple></transform> 
+            <log message="JSON is: ${body}"/>
+			<convertBodyTo type="java.lang.String"/>
+            <transform>
+            	<simple>${body.replaceAll(":null,", ":${property.journalId},")}</simple>
+            </transform> 
             <to uri="direct:end"/>
         </route>
     </camelContext>
