@@ -8,7 +8,7 @@ In this Lab I'm testing Apache Camel embedded in an AWS Lambda Function
 * Performance and starting time, due to the Lambda's restriction of 15 minutes of life
 
 ## Design
-The Lambda Fucntion is triggered when a new file is dropped in a specific S3 folder. As an input parameter, we define an S3 Event (not the file content itself). Then, the file is retrieved and passed to Camel using the "direct" transport. Camel unmarshalls the XML file and builds a JSON representation of it which is returned to the Lambda Function, which produces it as output.
+The Lambda Function is triggered when a new file is dropped in a specific S3 folder. As an input parameter, we define an S3 Event (not the file content itself). Then, the file is retrieved and passed to Camel using the "direct" transport. Camel unmarshalls the XML file and builds a JSON representation of it which is returned to the Lambda Function, which produces it as output.
 
 ## How to use it
 git clone https://github.com/garciapau/LambdaRidingCamel.git
