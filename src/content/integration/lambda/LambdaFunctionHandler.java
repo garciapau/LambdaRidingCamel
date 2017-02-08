@@ -41,7 +41,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         producerTemplate.sendBody("direct:start", fileContent);
         context.getLogger().log("\nMessage to Camel sent");
         output = consumerTemplate.receiveBodyNoWait("direct:end", String.class);
-        context.getLogger().log("\nResult is: " + camelReturn);
+        context.getLogger().log("\nResult is: " + output);
         context.getLogger().log("\nStopping Camel...");
         try {
 			camelContext.stop();
