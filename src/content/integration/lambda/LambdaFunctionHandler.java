@@ -29,7 +29,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         SpringCamelContext camelContext = null;
         try {
         	camelContext = SpringCamelContext.springCamelContext(spring);
-        	camelContext.start();
+//        	camelContext.start();
 		} catch (Exception e) {
 			context.getLogger().log("Error: " + e.getMessage());
 			return "Error creating camel context";
