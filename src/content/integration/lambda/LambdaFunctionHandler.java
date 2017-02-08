@@ -32,17 +32,16 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         	camelContext.start();
 		} catch (Exception e) {
 			context.getLogger().log("Error: " + e.getMessage());
-			return "Error createing camel context";
+			return "Error creating camel context";
 		}
     	ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
         ConsumerTemplate consumerTemplate = camelContext.createConsumerTemplate();
-        Exchange exchange = consumerTemplate.receiveNoWait("direct:end");
+        output = consumerTemplate.receiveBodyNoWait("direct:end", String.class);
         context.getLogger().log("\nSending direct message to Camel...");
         producerTemplate.sendBody("direct:start", fileContent);
         context.getLogger().log("\nMessage to Camel sent");
-        exchange = consumerTemplate.receiveNoWait("direct:end");
-        output = exchange.getIn().getBody().toString();
-        context.getLogger().log("\nResult is: " + output);
+        output = consumerTemplate.receiveBodyNoWait("direct:end", String.class);
+        context.getLogger().log("\nResult is: " + camelReturn);
         context.getLogger().log("\nStopping Camel...");
         try {
 			camelContext.stop();

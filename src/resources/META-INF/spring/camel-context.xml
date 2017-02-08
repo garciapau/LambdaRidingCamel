@@ -19,6 +19,7 @@
             <process id="LogMessage" ref="logProcessor"></process>
  			<unmarshal id="UnmarshallXML" ref="jaxb"/>
             <marshal id="BuildJSONMessage" ref="json"/>
+            <log message="JSON is: ${body}"/>
             <to uri="direct:end"/>
         </route>
     </camelContext>
